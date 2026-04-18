@@ -1,0 +1,704 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------------------------------------------------------------------
+   Jobsite Industrial palette
+   Light mode: paper + ink + safety amber.
+   Dark mode: shop-at-night, warm near-black + brighter amber.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --ink: #0a0a0a;
+  --ink-soft: #1c1917;
+  --paper: #f5f1e8;
+  --paper-raised: #ffffff;
+  --amber: #f59e0b;
+  --amber-deep: #b45309;
+  --torch: #1d4ed8;
+  --torch-soft: #3b82f6;
+  --timber: #365314;
+  --timber-soft: #4d7c0f;
+  --flare: #b91c1c;
+  --flare-soft: #dc2626;
+  --stone-900: #1c1917;
+  --stone-600: #57534e;
+  --stone-400: #a8a29e;
+  --stone-300: #d6d3d1;
+  --stone-200: #e7e5e4;
+  --stone-100: #f5f5f4;
+  --hazard-1: #fbbf24;
+  --hazard-2: #111111;
+
+  --grid-dot: rgba(28, 25, 23, 0.08);
+  --focus-ring: var(--amber);
+
+  /* Shadcn token remap */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper-raised);
+  --card-foreground: var(--ink);
+  --popover: var(--paper-raised);
+  --popover-foreground: var(--ink);
+  --primary: var(--amber);
+  --primary-foreground: var(--ink);
+  --secondary: var(--stone-100);
+  --secondary-foreground: var(--ink);
+  --muted: var(--stone-100);
+  --muted-foreground: var(--stone-600);
+  --accent: var(--stone-100);
+  --accent-foreground: var(--ink);
+  --destructive: var(--flare);
+  --destructive-foreground: #fafaf7;
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--amber);
+  --chart-1: var(--amber);
+  --chart-2: var(--torch);
+  --chart-3: var(--timber);
+  --chart-4: var(--flare);
+  --chart-5: var(--stone-600);
+  --radius: 0.125rem;
+  --sidebar: var(--paper-raised);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--amber);
+  --sidebar-primary-foreground: var(--ink);
+  --sidebar-accent: var(--stone-100);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--ink);
+  --sidebar-ring: var(--amber);
+}
+
+.dark {
+  --ink: #f5f1e8;
+  --ink-soft: #d6d3d1;
+  --paper: #0d0c0a;
+  --paper-raised: #1a1816;
+  --amber: #fbbf24;
+  --amber-deep: #f59e0b;
+  --torch: #60a5fa;
+  --torch-soft: #93c5fd;
+  --timber: #84cc16;
+  --timber-soft: #a3e635;
+  --flare: #f87171;
+  --flare-soft: #fca5a5;
+  --stone-900: #fafaf9;
+  --stone-600: #a8a29e;
+  --stone-400: #78716c;
+  --stone-300: #44403c;
+  --stone-200: #292524;
+  --stone-100: #1c1917;
+  --hazard-1: #fbbf24;
+  --hazard-2: #0a0a0a;
+
+  --grid-dot: rgba(245, 241, 232, 0.07);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper-raised);
+  --card-foreground: var(--ink);
+  --popover: var(--paper-raised);
+  --popover-foreground: var(--ink);
+  --primary: var(--amber);
+  --primary-foreground: var(--ink);
+  --secondary: var(--stone-100);
+  --secondary-foreground: var(--ink);
+  --muted: var(--stone-100);
+  --muted-foreground: var(--stone-400);
+  --accent: var(--stone-100);
+  --accent-foreground: var(--ink);
+  --destructive: var(--flare);
+  --destructive-foreground: #0a0a0a;
+  --border: var(--stone-300);
+  --input: var(--stone-300);
+  --ring: var(--amber);
+}
+
+@theme inline {
+  --font-display: 'Anton', 'Archivo Black', Impact, sans-serif;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-amber: var(--amber);
+  --color-amber-deep: var(--amber-deep);
+  --color-torch: var(--torch);
+  --color-torch-soft: var(--torch-soft);
+  --color-timber: var(--timber);
+  --color-timber-soft: var(--timber-soft);
+  --color-flare: var(--flare);
+  --color-flare-soft: var(--flare-soft);
+  --color-stone-900: var(--stone-900);
+  --color-stone-600: var(--stone-600);
+  --color-stone-400: var(--stone-400);
+  --color-stone-300: var(--stone-300);
+  --color-stone-200: var(--stone-200);
+  --color-stone-100: var(--stone-100);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--amber-deep);
+}
+
+.dark a:hover {
+  color: var(--amber);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--stone-100);
+  border: 1px solid var(--stone-300);
+  border-radius: 2px;
+  padding: 1px 6px;
+}
+
+pre code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities — jobsite signatures
+   --------------------------------------------------------------------------- */
+
+.page-wrap {
+  width: min(1200px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--stone-600);
+}
+
+.kicker--amber {
+  color: var(--amber);
+}
+
+/* Slug banner — black bar at the top of every page */
+.slug-banner {
+  position: relative;
+  background: var(--ink);
+  color: #fafaf7;
+  padding: 1.75rem 0 1.5rem;
+  border-bottom: 2px solid var(--amber);
+}
+
+.dark .slug-banner {
+  background: #050504;
+  color: var(--ink);
+}
+
+.slug-banner::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -2px 0;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--amber) 0,
+    var(--amber) 18px,
+    transparent 18px,
+    transparent 24px
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.slug-banner__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.slug-banner__kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.slug-banner__meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stone-400);
+  margin-top: 0.75rem;
+}
+
+/* VIN plate — signature component */
+.vin-plate {
+  position: relative;
+  background: var(--paper-raised);
+  border: 2px solid var(--ink);
+  padding: 0.65rem 1rem;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.vin-plate--block {
+  display: flex;
+  width: 100%;
+}
+
+.vin-plate__kicker {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--stone-600);
+}
+
+.vin-plate__value {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vin-plate--lg .vin-plate__value {
+  font-size: 1.25rem;
+  letter-spacing: 0.22em;
+}
+
+.vin-plate__tick {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 0 solid var(--amber);
+}
+
+.vin-plate__tick--tl {
+  top: -2px;
+  left: -2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+.vin-plate__tick--tr {
+  top: -2px;
+  right: -2px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+.vin-plate__tick--bl {
+  bottom: -2px;
+  left: -2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+.vin-plate__tick--br {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+/* Status stamp — cargo-stamp badge */
+.status-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.4rem 0.65rem;
+  border-radius: 2px;
+  border: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.status-stamp--sm {
+  font-size: 0.65rem;
+  padding: 0.3rem 0.5rem;
+}
+
+.status-stamp--lg {
+  font-size: 1.1rem;
+  padding: 0.7rem 1.2rem;
+  letter-spacing: 0.08em;
+}
+
+.status-stamp--xl {
+  font-size: 1.6rem;
+  padding: 1rem 1.6rem;
+  letter-spacing: 0.1em;
+}
+
+.status-stamp--amber {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+}
+.status-stamp--torch {
+  background: var(--torch);
+  color: #fafaf7;
+  border-color: var(--torch);
+}
+.status-stamp--timber {
+  background: var(--timber);
+  color: #fafaf7;
+  border-color: var(--timber);
+}
+.status-stamp--flare {
+  background: var(--flare);
+  color: #fafaf7;
+  border-color: var(--flare);
+}
+.status-stamp--stone {
+  background: var(--stone-600);
+  color: #fafaf7;
+  border-color: var(--stone-600);
+}
+.status-stamp--outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.dark .status-stamp--amber {
+  color: #0a0a0a;
+}
+
+/* Battery-cell progress */
+.progress-cells {
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+}
+
+.progress-cell {
+  flex: 1 1 0;
+  min-width: 6px;
+  height: 10px;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  transition: background-color 180ms ease;
+}
+
+.progress-cell--filled-amber {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.progress-cell--filled-timber {
+  background: var(--timber);
+  border-color: var(--timber);
+}
+
+/* Diagonal hazard stripes */
+.hazard-stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--hazard-2) 0,
+    var(--hazard-2) 12px,
+    var(--hazard-1) 12px,
+    var(--hazard-1) 24px
+  );
+}
+
+.hazard-stripes--thin {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--hazard-2) 0,
+    var(--hazard-2) 6px,
+    var(--hazard-1) 6px,
+    var(--hazard-1) 12px
+  );
+}
+
+/* Shop card — replaces the default Card look where we want hard industrial */
+.shop-card {
+  background: var(--paper-raised);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.shop-card[data-accent='amber'] {
+  border-left-width: 6px;
+  border-left-color: var(--amber);
+}
+.shop-card[data-accent='torch'] {
+  border-left-width: 6px;
+  border-left-color: var(--torch);
+}
+.shop-card[data-accent='timber'] {
+  border-left-width: 6px;
+  border-left-color: var(--timber);
+}
+.shop-card[data-accent='flare'] {
+  border-left-width: 6px;
+  border-left-color: var(--flare);
+}
+
+.shop-card--tap:active {
+  transform: translateY(1px);
+}
+
+/* Photo frame */
+.photo-frame {
+  position: relative;
+  background: var(--paper-raised);
+  border: 2px solid var(--ink);
+  padding: 4px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Corner ticks — generic, used on any box */
+.corner-ticks {
+  position: relative;
+}
+.corner-ticks > .tick {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 0 solid var(--amber);
+  pointer-events: none;
+}
+.corner-ticks > .tick.tl {
+  top: -2px;
+  left: -2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+.corner-ticks > .tick.tr {
+  top: -2px;
+  right: -2px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+.corner-ticks > .tick.bl {
+  bottom: -2px;
+  left: -2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+.corner-ticks > .tick.br {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+/* Logo ink/paper flip for SVG mark */
+.logo-mark {
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — restrained, jobsite-appropriate
+   --------------------------------------------------------------------------- */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes amber-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.amber-pulse {
+  animation: amber-pulse 1.25s ease-out 1;
+}
+
+@keyframes hazard-march {
+  to {
+    background-position: 48px 0;
+  }
+}
+
+.hazard-march {
+  animation: hazard-march 2.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in,
+  .amber-pulse,
+  .hazard-march {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Focus states — amber outline on every focusable
+   --------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Selection
+   --------------------------------------------------------------------------- */
+
+::selection {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Prose override — keep typography plugin readable
+   --------------------------------------------------------------------------- */
+
+.prose pre {
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  background: var(--ink);
+  color: #fafaf7;
+}
+
+/* ---------------------------------------------------------------------------
+   Shadcn base (keep the @layer base from original, tuned for new tokens)
+   --------------------------------------------------------------------------- */
+
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}

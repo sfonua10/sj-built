@@ -1,0 +1,26 @@
+{
+  "projectName": "sj-built",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "npm",
+  "includeExamples": false,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {
+    "VITE_CLERK_PUBLISHABLE_KEY": "pk_test_dXNlZnVsLWpheWJpcmQtMzQuY2xlcmsuYWNjb3VudHMuZGV2JA",
+    "CONVEX_DEPLOYMENT": "dev:focused-hippopotamus-219",
+    "VITE_CONVEX_URL": "https://focused-hippopotamus-219.convex.cloud"
+  },
+  "git": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "clerk",
+    "convex",
+    "shadcn",
+    "sentry",
+    "posthog"
+  ]
+}
