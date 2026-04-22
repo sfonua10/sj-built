@@ -13,7 +13,7 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "bash -c 'set -a; [ -f .env ] && source .env; set +a; npm run build && wrangler deploy'"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.26.0",
