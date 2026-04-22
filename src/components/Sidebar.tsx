@@ -7,16 +7,18 @@ import {
 	LogOut,
 	Menu,
 	ShieldCheck,
+	Star,
 	Users,
 	X,
 } from "lucide-react";
 import { useState } from "react";
-import { useCurrentUser } from "#/lib/useCurrentUser";
+import { ROLE_LABEL, type Role } from "#/lib/types";
+import { isAdminRole, useCurrentUser } from "#/lib/useCurrentUser";
 
 const adminNav = [
 	{ to: "/", label: "Dashboard", icon: LayoutDashboard },
 	{ to: "/work-orders", label: "Work Orders", icon: ClipboardList },
-	{ to: "/contractors", label: "Contractors", icon: Users },
+	{ to: "/team", label: "Team Members", icon: Users },
 ] as const;
 
 const contractorNav = [
@@ -30,7 +32,7 @@ export function Sidebar() {
 	const { user, signOut } = useCurrentUser();
 	const navigate = useNavigate();
 
-	const navItems = user?.role === "contractor" ? contractorNav : adminNav;
+	const navItems = isAdminRole(user?.role) ? adminNav : contractorNav;
 
 	const handleSignOut = () => {
 		signOut();
@@ -119,14 +121,12 @@ export function Sidebar() {
 				{user && (
 					<div className="border-t border-slate-800 p-3">
 						<div className="flex items-center gap-2 px-2 py-2 text-sm">
-							{user.role === "admin" ? (
-								<ShieldCheck className="h-5 w-5 shrink-0 text-amber-400" />
-							) : (
-								<HardHat className="h-5 w-5 shrink-0 text-amber-400" />
-							)}
+							<RoleIcon role={user.role} />
 							<div className="min-w-0">
 								<p className="truncate font-medium">{user.fullName}</p>
-								<p className="text-xs capitalize text-slate-400">{user.role}</p>
+								<p className="text-xs text-slate-400">
+									{ROLE_LABEL[user.role]}
+								</p>
 							</div>
 						</div>
 						<button
@@ -142,4 +142,15 @@ export function Sidebar() {
 			</aside>
 		</>
 	);
+}
+
+function RoleIcon({ role }: { role: Role }) {
+	switch (role) {
+		case "owner":
+			return <Star className="h-5 w-5 shrink-0 text-amber-400" />;
+		case "member":
+			return <ShieldCheck className="h-5 w-5 shrink-0 text-amber-400" />;
+		case "contractor":
+			return <HardHat className="h-5 w-5 shrink-0 text-amber-400" />;
+	}
 }

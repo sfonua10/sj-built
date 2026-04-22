@@ -1,21 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
-
-export type Role = "admin" | "contractor";
+import type { Role } from "#/lib/types";
 
 export type CurrentUser = {
+	memberId: string;
 	role: Role;
 	fullName: string;
-	contractorId: string | null;
 };
 
-const STORAGE_KEY = "sjbuilt.currentUser.v1";
+const STORAGE_KEY = "sjbuilt.currentUser.v2";
 
 function readStoredUser(): CurrentUser | null {
 	if (typeof window === "undefined") return null;
 	try {
 		const raw = window.localStorage.getItem(STORAGE_KEY);
 		if (!raw) return null;
-		return JSON.parse(raw) as CurrentUser;
+		const parsed = JSON.parse(raw) as Partial<CurrentUser>;
+		if (
+			typeof parsed?.memberId !== "string" ||
+			typeof parsed?.fullName !== "string" ||
+			(parsed.role !== "owner" &&
+				parsed.role !== "member" &&
+				parsed.role !== "contractor")
+		) {
+			return null;
+		}
+		return {
+			memberId: parsed.memberId,
+			role: parsed.role,
+			fullName: parsed.fullName,
+		};
 	} catch {
 		return null;
 	}
@@ -49,4 +62,8 @@ export function useCurrentUser() {
 	}, []);
 
 	return { user, hydrated, signIn, signOut };
+}
+
+export function isAdminRole(role: Role | undefined | null): boolean {
+	return role === "owner" || role === "member";
 }

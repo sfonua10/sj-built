@@ -35,8 +35,8 @@ function MyJobs() {
 		[],
 	);
 
-	const myOrders = user?.contractorId
-		? orders.filter((o) => o.assignedContractorId === user.contractorId)
+	const myOrders = user
+		? orders.filter((o) => o.assignedMemberId === user.memberId)
 		: [];
 
 	const cycleJobStatus = (orderId: string, jobId: string) => {

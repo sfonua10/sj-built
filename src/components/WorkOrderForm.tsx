@@ -1,6 +1,6 @@
 import { Plus, Trash2, X } from "lucide-react";
 import { useState } from "react";
-import type { Contractor } from "#/lib/types";
+import type { TeamMember } from "#/lib/types";
 import { randomId } from "#/lib/useLocalStorageState";
 
 export type JobDraft = {
@@ -14,12 +14,12 @@ export type WorkOrderDraft = {
 	customerName: string;
 	vehicle: string;
 	mileage: string;
-	assignedContractorId: string | null;
+	assignedMemberId: string | null;
 	jobs: JobDraft[];
 };
 
 type Props = {
-	contractors: Contractor[];
+	contractors: TeamMember[];
 	onClose: () => void;
 	onSubmit: (draft: WorkOrderDraft) => void;
 };
@@ -33,7 +33,7 @@ export function WorkOrderForm({ contractors, onClose, onSubmit }: Props) {
 	const [customerName, setCustomerName] = useState("");
 	const [vehicle, setVehicle] = useState("");
 	const [mileage, setMileage] = useState("");
-	const [assignedContractorId, setAssignedContractorId] = useState<string>("");
+	const [assignedMemberId, setAssignedMemberId] = useState<string>("");
 	const [jobs, setJobs] = useState<JobDraft[]>([newJob()]);
 	const [vinError, setVinError] = useState<string | null>(null);
 
@@ -67,7 +67,7 @@ export function WorkOrderForm({ contractors, onClose, onSubmit }: Props) {
 			customerName: customerName.trim(),
 			vehicle: vehicle.trim(),
 			mileage: mileage.trim(),
-			assignedContractorId: assignedContractorId || null,
+			assignedMemberId: assignedMemberId || null,
 			jobs: validJobs,
 		});
 	};
@@ -191,8 +191,8 @@ export function WorkOrderForm({ contractors, onClose, onSubmit }: Props) {
 							</label>
 							<select
 								id="wo-contractor"
-								value={assignedContractorId}
-								onChange={(e) => setAssignedContractorId(e.target.value)}
+								value={assignedMemberId}
+								onChange={(e) => setAssignedMemberId(e.target.value)}
 								className="block h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-base shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-500"
 							>
 								<option value="">— Unassigned —</option>
@@ -204,7 +204,8 @@ export function WorkOrderForm({ contractors, onClose, onSubmit }: Props) {
 							</select>
 							{contractors.length === 0 && (
 								<p className="text-xs text-slate-500">
-									No contractors yet. Add some on the Contractors page.
+									No contractors on the team yet. Invite one on the Team Members
+									page.
 								</p>
 							)}
 						</div>

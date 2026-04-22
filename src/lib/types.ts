@@ -13,10 +13,22 @@ export type JobLineItem = {
 	status: JobStatus;
 };
 
-export type Contractor = {
+export type Role = "owner" | "member" | "contractor";
+
+export const ROLE_LABEL: Record<Role, string> = {
+	owner: "Owner",
+	member: "Member",
+	contractor: "Contractor",
+};
+
+export type TeamMember = {
 	id: string;
 	createdAt: number;
 	fullName: string;
+	email: string;
+	role: Role;
+	inviteToken: string;
+	acceptedAt: number | null;
 };
 
 export type WorkOrder = {
@@ -26,11 +38,11 @@ export type WorkOrder = {
 	customerName: string;
 	vehicle: string;
 	mileage: string;
-	assignedContractorId: string | null;
+	assignedMemberId: string | null;
 	jobs: JobLineItem[];
 };
 
 export const STORAGE_KEYS = {
-	contractors: "sjbuilt.contractors.v1",
-	workOrders: "sjbuilt.workOrders.v1",
+	teamMembers: "sjbuilt.teamMembers.v1",
+	workOrders: "sjbuilt.workOrders.v2",
 } as const;

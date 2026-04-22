@@ -10,14 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkOrdersRouteImport } from './routes/work-orders'
+import { Route as TeamRouteImport } from './routes/team'
 import { Route as MyJobsRouteImport } from './routes/my-jobs'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as ContractorsRouteImport } from './routes/contractors'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 
 const WorkOrdersRoute = WorkOrdersRouteImport.update({
   id: '/work-orders',
   path: '/work-orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamRoute = TeamRouteImport.update({
+  id: '/team',
+  path: '/team',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyJobsRoute = MyJobsRouteImport.update({
@@ -30,53 +36,70 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContractorsRoute = ContractorsRouteImport.update({
-  id: '/contractors',
-  path: '/contractors',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InviteTokenRoute = InviteTokenRouteImport.update({
+  id: '/invite/$token',
+  path: '/invite/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/contractors': typeof ContractorsRoute
   '/login': typeof LoginRoute
   '/my-jobs': typeof MyJobsRoute
+  '/team': typeof TeamRoute
   '/work-orders': typeof WorkOrdersRoute
+  '/invite/$token': typeof InviteTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/contractors': typeof ContractorsRoute
   '/login': typeof LoginRoute
   '/my-jobs': typeof MyJobsRoute
+  '/team': typeof TeamRoute
   '/work-orders': typeof WorkOrdersRoute
+  '/invite/$token': typeof InviteTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/contractors': typeof ContractorsRoute
   '/login': typeof LoginRoute
   '/my-jobs': typeof MyJobsRoute
+  '/team': typeof TeamRoute
   '/work-orders': typeof WorkOrdersRoute
+  '/invite/$token': typeof InviteTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contractors' | '/login' | '/my-jobs' | '/work-orders'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/my-jobs'
+    | '/team'
+    | '/work-orders'
+    | '/invite/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contractors' | '/login' | '/my-jobs' | '/work-orders'
-  id: '__root__' | '/' | '/contractors' | '/login' | '/my-jobs' | '/work-orders'
+  to: '/' | '/login' | '/my-jobs' | '/team' | '/work-orders' | '/invite/$token'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/my-jobs'
+    | '/team'
+    | '/work-orders'
+    | '/invite/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ContractorsRoute: typeof ContractorsRoute
   LoginRoute: typeof LoginRoute
   MyJobsRoute: typeof MyJobsRoute
+  TeamRoute: typeof TeamRoute
   WorkOrdersRoute: typeof WorkOrdersRoute
+  InviteTokenRoute: typeof InviteTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -86,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/work-orders'
       fullPath: '/work-orders'
       preLoaderRoute: typeof WorkOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team': {
+      id: '/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof TeamRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-jobs': {
@@ -102,13 +132,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contractors': {
-      id: '/contractors'
-      path: '/contractors'
-      fullPath: '/contractors'
-      preLoaderRoute: typeof ContractorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -116,15 +139,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invite/$token': {
+      id: '/invite/$token'
+      path: '/invite/$token'
+      fullPath: '/invite/$token'
+      preLoaderRoute: typeof InviteTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ContractorsRoute: ContractorsRoute,
   LoginRoute: LoginRoute,
   MyJobsRoute: MyJobsRoute,
+  TeamRoute: TeamRoute,
   WorkOrdersRoute: WorkOrdersRoute,
+  InviteTokenRoute: InviteTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

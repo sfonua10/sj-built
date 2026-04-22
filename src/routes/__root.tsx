@@ -25,39 +25,45 @@ export const Route = createRootRoute({
 	shellComponent: RootDocument,
 });
 
-const CONTRACTOR_ALLOWED = new Set<string>(["/my-jobs", "/login"]);
+function isPublicPath(path: string) {
+	return path === "/login" || path.startsWith("/invite/");
+}
+
+function isContractorAllowed(path: string) {
+	return path === "/my-jobs" || isPublicPath(path);
+}
 
 function AuthShell({ children }: { children: React.ReactNode }) {
 	const { user, hydrated } = useCurrentUser();
 	const { location } = useRouterState();
 	const navigate = useNavigate();
 	const path = location.pathname;
-	const isLogin = path === "/login";
+	const publicPath = isPublicPath(path);
 
 	useEffect(() => {
 		if (!hydrated) return;
-		if (!user && !isLogin) {
+		if (!user && !publicPath) {
 			navigate({ to: "/login", replace: true });
 			return;
 		}
-		if (user?.role === "contractor" && !CONTRACTOR_ALLOWED.has(path)) {
+		if (user?.role === "contractor" && !isContractorAllowed(path)) {
 			navigate({ to: "/my-jobs", replace: true });
 		}
-	}, [hydrated, user, path, isLogin, navigate]);
+	}, [hydrated, user, path, publicPath, navigate]);
 
 	if (!hydrated) {
 		return <main className="p-4 sm:p-6 md:p-8" aria-busy="true" />;
 	}
 
-	if (!user && !isLogin) {
+	if (!user && !publicPath) {
 		return <main className="p-4 sm:p-6 md:p-8" aria-busy="true" />;
 	}
 
-	if (user?.role === "contractor" && !CONTRACTOR_ALLOWED.has(path)) {
+	if (user?.role === "contractor" && !isContractorAllowed(path)) {
 		return <main className="p-4 sm:p-6 md:p-8" aria-busy="true" />;
 	}
 
-	if (isLogin) {
+	if (publicPath) {
 		return <main className="p-4 sm:p-6 md:p-8">{children}</main>;
 	}
 

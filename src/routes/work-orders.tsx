@@ -3,10 +3,10 @@ import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { type WorkOrderDraft, WorkOrderForm } from "#/components/WorkOrderForm";
 import {
-	type Contractor,
 	JOB_STATUS_LABEL,
 	type JobStatus,
 	STORAGE_KEYS,
+	type TeamMember,
 	type WorkOrder,
 } from "#/lib/types";
 import { randomId, useLocalStorageState } from "#/lib/useLocalStorageState";
@@ -45,11 +45,13 @@ function WorkOrders() {
 		STORAGE_KEYS.workOrders,
 		[],
 	);
-	const [contractors] = useLocalStorageState<Contractor[]>(
-		STORAGE_KEYS.contractors,
+	const [members] = useLocalStorageState<TeamMember[]>(
+		STORAGE_KEYS.teamMembers,
 		[],
 	);
 	const [formOpen, setFormOpen] = useState(false);
+
+	const contractors = members.filter((m) => m.role === "contractor");
 
 	useEffect(() => {
 		if (search.new === 1) {
@@ -58,8 +60,8 @@ function WorkOrders() {
 		}
 	}, [search.new, navigate]);
 
-	const contractorName = (id: string | null) =>
-		contractors.find((c) => c.id === id)?.fullName ?? "Unassigned";
+	const memberName = (id: string | null) =>
+		members.find((m) => m.id === id)?.fullName ?? "Unassigned";
 
 	const handleCreate = (draft: WorkOrderDraft) => {
 		const order: WorkOrder = {
@@ -158,7 +160,7 @@ function WorkOrders() {
 											Assigned
 										</dt>
 										<dd className="text-slate-800">
-											{contractorName(order.assignedContractorId)}
+											{memberName(order.assignedMemberId)}
 										</dd>
 									</div>
 									<div>
