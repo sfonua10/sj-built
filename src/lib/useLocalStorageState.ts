@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useLocalStorageState<T>(key: string, defaultValue: T) {
-	const [value, setValue] = useState<T>(defaultValue);
+	const [value, setInternal] = useState<T>(defaultValue);
 	const [hydrated, setHydrated] = useState(false);
 
 	useEffect(() => {
 		try {
 			const stored = window.localStorage.getItem(key);
 			if (stored !== null) {
-				setValue(JSON.parse(stored) as T);
+				setInternal(JSON.parse(stored) as T);
 			}
 		} catch {
 			// ignore parse / storage errors
@@ -16,14 +16,21 @@ export function useLocalStorageState<T>(key: string, defaultValue: T) {
 		setHydrated(true);
 	}, [key]);
 
-	useEffect(() => {
-		if (!hydrated) return;
-		try {
-			window.localStorage.setItem(key, JSON.stringify(value));
-		} catch {
-			// ignore quota / serialization errors
-		}
-	}, [key, value, hydrated]);
+	const setValue: React.Dispatch<React.SetStateAction<T>> = useCallback(
+		(update) => {
+			setInternal((prev) => {
+				const next =
+					typeof update === "function" ? (update as (p: T) => T)(prev) : update;
+				try {
+					window.localStorage.setItem(key, JSON.stringify(next));
+				} catch {
+					// ignore quota / serialization errors
+				}
+				return next;
+			});
+		},
+		[key],
+	);
 
 	return [value, setValue, hydrated] as const;
 }
