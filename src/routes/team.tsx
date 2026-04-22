@@ -1,5 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Copy, HardHat, Plus, ShieldCheck, Star } from "lucide-react";
+import {
+	Check,
+	Copy,
+	HardHat,
+	Plus,
+	ShieldCheck,
+	Sparkles,
+	Star,
+} from "lucide-react";
 import { useState } from "react";
 import {
 	type TeamMemberDraft,
@@ -14,6 +22,33 @@ import {
 import { randomId, useLocalStorageState } from "#/lib/useLocalStorageState";
 
 export const Route = createFileRoute("/team")({ component: Team });
+
+const SAMPLE_MEMBERS: Array<{
+	fullName: string;
+	email: string;
+	role: Exclude<Role, "owner">;
+}> = [
+	{
+		fullName: "Saia Fonua",
+		email: "saia.sample@sjbuilt.demo",
+		role: "member",
+	},
+	{
+		fullName: "Mike Torres",
+		email: "mike.sample@sjbuilt.demo",
+		role: "contractor",
+	},
+	{
+		fullName: "Jen Alvarez",
+		email: "jen.sample@sjbuilt.demo",
+		role: "contractor",
+	},
+	{
+		fullName: "Luis Park",
+		email: "luis.sample@sjbuilt.demo",
+		role: "contractor",
+	},
+];
 
 function inviteUrl(token: string) {
 	if (typeof window === "undefined") return `/invite/${token}`;
@@ -40,6 +75,22 @@ function Team() {
 		setFormOpen(false);
 	};
 
+	const handleLoadSamples = () => {
+		setMembers((prev) => {
+			const existing = new Set(prev.map((m) => m.email));
+			const additions: TeamMember[] = SAMPLE_MEMBERS.filter(
+				(s) => !existing.has(s.email),
+			).map((s, idx) => ({
+				...s,
+				id: randomId("m"),
+				createdAt: Date.now() + idx,
+				inviteToken: randomId("tok"),
+				acceptedAt: Date.now() + idx,
+			}));
+			return [...additions, ...prev];
+		});
+	};
+
 	const handleCopy = async (memberId: string, token: string) => {
 		const url = inviteUrl(token);
 		try {
@@ -59,14 +110,24 @@ function Team() {
 		<div className="space-y-6">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<h1 className="text-2xl font-semibold sm:text-3xl">Team Members</h1>
-				<button
-					type="button"
-					onClick={() => setFormOpen(true)}
-					className="inline-flex h-11 items-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-400"
-				>
-					<Plus className="h-5 w-5" />
-					Invite
-				</button>
+				<div className="flex flex-wrap gap-2">
+					<button
+						type="button"
+						onClick={handleLoadSamples}
+						className="inline-flex h-11 items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+					>
+						<Sparkles className="h-4 w-4 text-amber-500" />
+						Load samples
+					</button>
+					<button
+						type="button"
+						onClick={() => setFormOpen(true)}
+						className="inline-flex h-11 items-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-400"
+					>
+						<Plus className="h-5 w-5" />
+						Invite
+					</button>
+				</div>
 			</div>
 
 			<p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
