@@ -8,6 +8,7 @@ export type CurrentUser = {
 };
 
 const STORAGE_KEY = "sjbuilt.currentUser.v2";
+const USER_CHANGED_EVENT = "sjbuilt:currentUserChanged";
 
 function readStoredUser(): CurrentUser | null {
 	if (typeof window === "undefined") return null;
@@ -34,6 +35,11 @@ function readStoredUser(): CurrentUser | null {
 	}
 }
 
+function notifyUserChanged() {
+	if (typeof window === "undefined") return;
+	window.dispatchEvent(new Event(USER_CHANGED_EVENT));
+}
+
 export function useCurrentUser() {
 	const [user, setUser] = useState<CurrentUser | null>(null);
 	const [hydrated, setHydrated] = useState(false);
@@ -42,23 +48,28 @@ export function useCurrentUser() {
 		setUser(readStoredUser());
 		setHydrated(true);
 
+		const refresh = () => setUser(readStoredUser());
 		const onStorage = (event: StorageEvent) => {
-			if (event.key === STORAGE_KEY) {
-				setUser(readStoredUser());
-			}
+			if (event.key === STORAGE_KEY) refresh();
 		};
 		window.addEventListener("storage", onStorage);
-		return () => window.removeEventListener("storage", onStorage);
+		window.addEventListener(USER_CHANGED_EVENT, refresh);
+		return () => {
+			window.removeEventListener("storage", onStorage);
+			window.removeEventListener(USER_CHANGED_EVENT, refresh);
+		};
 	}, []);
 
 	const signIn = useCallback((next: CurrentUser) => {
 		window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
 		setUser(next);
+		notifyUserChanged();
 	}, []);
 
 	const signOut = useCallback(() => {
 		window.localStorage.removeItem(STORAGE_KEY);
 		setUser(null);
+		notifyUserChanged();
 	}, []);
 
 	return { user, hydrated, signIn, signOut };
